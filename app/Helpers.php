@@ -25,11 +25,12 @@ function is_able($action)
         'pegawai' => [
             'home',
             'user.password', 'user.password.update', 'user.logout', 'user.profil', 'user.profil.update',
-            // 'user.index', 'user.create', 'user.store', 'user.edit', 'user.update', 'user.destroy',
+            'user.index', 'user.create', 'user.store', 'user.edit', 'user.update', 'user.destroy',
             'kriteria.index', 'kriteria.cetak', 'kriteria.create', 'kriteria.store', 'kriteria.edit', 'kriteria.update', 'kriteria.destroy',
             'alternatif.index', 'alternatif.cetak', 'alternatif.create', 'alternatif.store', 'alternatif.edit', 'alternatif.update', 'alternatif.destroy',
             'rel_alternatif.index', 'rel_alternatif.cetak', 'rel_alternatif.edit', 'rel_alternatif.update',
             'hitung.index', 'hitung.cetak',
+            'mahasiswa.index', 'mahasiswa.create', 'mahasiswa.store',
         ],
         'mhs' => [
             'home',

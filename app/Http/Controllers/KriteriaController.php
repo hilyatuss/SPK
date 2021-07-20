@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kriteria;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use DB;
 
 class KriteriaController extends Controller
 {
@@ -70,18 +71,22 @@ class KriteriaController extends Controller
         // $kriteria = new Kriteria($request->all());
         // $kriteria->save();
 
-        foreach($request->range as $row){
-            Kriteria::insert(
-                array('kode_kriteria' => $request->kode_kriteria, 
-                'nama_kriteria' => $request->nama_kriteria,
-                'atribut' => $request->atribut,
-                'bobot' =>  $request->bobot,
-                'range1' => $row,
+        Kriteria::insert(
+            array('kode_kriteria' => $request->kode_kriteria, 
+            'nama_kriteria' => $request->nama_kriteria,
+            'atribut' => $request->atribut,
+            'bobot' =>  $request->bobot
+        ));
 
+        foreach($request->range as $row){
+            // echo $row;
+            DB::table('tb_range')->insert(array(
+                'kode_kriteria' => $request->kode_kriteria,
+                'range' => $row
             ));
         }
 
-        query("INSERT INTO tb_rel_alternatif (kode_alternatif, kode_kriteria) SELECT kode_alternatif, ? FROM tb_alternatif", [$kriteria->kode_kriteria]);
+        query("INSERT INTO tb_rel_alternatif (kode_alternatif, kode_kriteria) SELECT kode_alternatif, ? FROM tb_alternatif", [$request->kode_kriteria]);
 
         return redirect('kriteria')->with('message', 'Data berhasil ditambah!');
     }

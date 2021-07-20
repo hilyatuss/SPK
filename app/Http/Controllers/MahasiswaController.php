@@ -34,25 +34,117 @@ class MahasiswaController extends Controller
         $request->validate([
             'kode_alternatif' => 'required|unique:tb_alternatif',
             'nama_alternatif' => 'required',
+            'jenis_kelamin' => 'required',
             'prodi' => 'required',
+            'semester' => 'required',
             ''
         ], [
             'kode_alternatif.required' => 'Kode alternatif harus diisi',
             'kode_alternatif.unique' => 'Kode alternatif harus unik',
             'nama_alternatif.required' => 'Nama Lengkap harus diisi',
+            'jenis_kelamin.required' => 'Jenis Kelamin harus diisi',
             'prodi.required' => 'Prodi harus diisi',
+            'semester.required' => 'Semester harus diisi',
         ]);
 
         DB::table('tb_alternatif')->insert(
             array('kode_alternatif' => $request->kode_alternatif, 
             'nama_alternatif' => $request->nama_alternatif,
             'jenis_kelamin' => $request->jenis_kelamin,
-            'prodi' =>  $request->prodi));
+            'prodi' =>  $request->prodi,
+            'semester' => $request->semester));
         
-        query("INSERT INTO tb_rel_alternatif (kode_alternatif, kode_kriteria) SELECT ?, kode_kriteria FROM tb_kriteria", [$request->kode_alternatif]);
+        // query("INSERT INTO tb_rel_alternatif (kode_alternatif, kode_kriteria) SELECT ?, kode_kriteria FROM tb_kriteria", [$request->kode_alternatif]);
+
         $kriteria = Kriteria::all();
         foreach($kriteria as $col){
             $namaFile = Carbon::now()->timestamp;
+            
+            if($col->atribut == "cost"){
+                if($request->nilai[$col->kode_kriteria] == 0){
+                    DB::table('tb_rel_alternatif')->insert(
+                        array( 
+                        'kode_alternatif' => $request->kode_alternatif,
+                        'kode_kriteria' => $col->kode_kriteria,
+                        'nilai' => 5,
+        
+                    ));
+                }else if($request->nilai[$col->kode_kriteria] == 1){
+                    DB::table('tb_rel_alternatif')->insert(
+                        array( 
+                        'kode_alternatif' => $request->kode_alternatif,
+                        'kode_kriteria' => $col->kode_kriteria,
+                        'nilai' => 4,
+        
+                    ));
+                }else if($request->nilai[$col->kode_kriteria] == 2){
+                    DB::table('tb_rel_alternatif')->insert(
+                        array( 
+                        'kode_alternatif' => $request->kode_alternatif,
+                        'kode_kriteria' => $col->kode_kriteria,
+                        'nilai' => 3,
+        
+                    ));
+                }else if($request->nilai[$col->kode_kriteria] == 3){
+                    DB::table('tb_rel_alternatif')->insert(
+                        array( 
+                        'kode_alternatif' => $request->kode_alternatif,
+                        'kode_kriteria' => $col->kode_kriteria,
+                        'nilai' => 2,
+        
+                    ));
+                }else if($request->nilai[$col->kode_kriteria] == 4){
+                    DB::table('tb_rel_alternatif')->insert(
+                        array( 
+                        'kode_alternatif' => $request->kode_alternatif,
+                        'kode_kriteria' => $col->kode_kriteria,
+                        'nilai' => 1,
+        
+                    ));
+                }
+            }else if($col->atribut == "benefit"){
+                if($request->nilai[$col->kode_kriteria] == 0){
+                    DB::table('tb_rel_alternatif')->insert(
+                        array( 
+                        'kode_alternatif' => $request->kode_alternatif,
+                        'kode_kriteria' => $col->kode_kriteria,
+                        'nilai' => 1,
+        
+                    ));
+                }else if($request->nilai[$col->kode_kriteria] == 1){
+                    DB::table('tb_rel_alternatif')->insert(
+                        array( 
+                        'kode_alternatif' => $request->kode_alternatif,
+                        'kode_kriteria' => $col->kode_kriteria,
+                        'nilai' => 2,
+        
+                    ));
+                }else if($request->nilai[$col->kode_kriteria] == 2){
+                    DB::table('tb_rel_alternatif')->insert(
+                        array( 
+                        'kode_alternatif' => $request->kode_alternatif,
+                        'kode_kriteria' => $col->kode_kriteria,
+                        'nilai' => 3,
+        
+                    ));
+                }else if($request->nilai[$col->kode_kriteria] == 3){
+                    DB::table('tb_rel_alternatif')->insert(
+                        array( 
+                        'kode_alternatif' => $request->kode_alternatif,
+                        'kode_kriteria' => $col->kode_kriteria,
+                        'nilai' => 4,
+        
+                    ));
+                }else if($request->nilai[$col->kode_kriteria] == 4){
+                    DB::table('tb_rel_alternatif')->insert(
+                        array( 
+                        'kode_alternatif' => $request->kode_alternatif,
+                        'kode_kriteria' => $col->kode_kriteria,
+                        'nilai' => 5,
+        
+                    ));
+                }
+            }
 
             if($request->hasfile('file')){
                 $request->file("filename[".$col->kode_kriteria."]")->move(public_path().'/images/', $namaFile);  

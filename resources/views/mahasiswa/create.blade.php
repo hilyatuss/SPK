@@ -14,7 +14,7 @@
 					</div>
 					<div class="form-group">
 						<label>Nama Lengkap<span class="text-danger">*</span></label>
-						<input class="form-control" type="text" name="nama_alternatif" value="{{ old('nama_alternatif') }}" />
+						<input class="form-control" autocomplete="off" type="text" name="nama_alternatif" value="{{ old('nama_alternatif') }}" />
 					</div>
 					<div class="form-group">
 						<label>Jenis Kelamin<span class="text-danger">*</span></label>
@@ -41,11 +41,10 @@
 								<label>{{ $row->nama_kriteria }}<span class="text-danger">*</span></label>
 								<select class="form-control" name="nilai[{{ $row->kode_kriteria }}]">
 									<?php
-										$range = DB::table('tb_kriteria')->where('kode_kriteria', '=', $row->kode_kriteria)->get();
+										$range = DB::table('tb_range')->where('kode_kriteria', '=', $row->kode_kriteria)->get();
 									?>
 									@foreach ($range as $num => $rows)
-										<option value="{{ $rows->range1 }}">{{ $rows->range1 }}</option>
-										<option value="{{ $rows->range2 }}">{{ $rows->range2 }}</option>
+										<option value="{{ $num }}">{{ $rows->range }}</option>
 									@endforeach
 								</select>
 							</div>
@@ -68,20 +67,3 @@
 	</div>
 </form>
 @endsection
-<!-- <div class="form-group">
-	<label>{{ $row->nama_kriteria }}<span class="text-danger">*</span></label>
-	<select class="form-control" name="nilai[{{ $row->kode_kriteria }}]">
-		<?php
-			$range = DB::table('tb_kriteria')->where('kode_kriteria', '=', $row->kode_kriteria)->get();
-		?>
-		@foreach ($range as $num => $rows)
-			<option value="{{ $rows->range1 }}">{{ $rows->range1 }}</option>
-			<option value="{{ $rows->range2 }}">{{ $rows->range2 }}</option>
-		@endforeach
-	</select>
-	
-	<div class="custom-file">
-		<input type="file" class="custom-file-input" id="customFile">
-		<label class="custom-file-label" for="customFile">Choose file</label>
-	</div>
-</div> -->
