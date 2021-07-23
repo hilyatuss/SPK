@@ -10,7 +10,7 @@ class Alternatif extends Model
     protected $primaryKey = 'kode_alternatif';
     public $incrementing = false;
 
-    protected $fillable = ['kode_alternatif', 'nama_alternatif', 'jenis_kelamin', 'prodi', 'semester', 'atribut', 'bobot'];
+    protected $fillable = ['kode_alternatif', 'nama_alternatif', 'jenis_kelamin', 'prodi', 'nim', 'semester', 'atribut', 'bobot'];
 
     public function nilais()
     {

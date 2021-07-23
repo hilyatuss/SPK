@@ -27,6 +27,7 @@
 				<th>Nama alternatif</th>
 				<th>Jenis Kelamin</th>
 				<th>Prodi</th>
+				<th>NIM</th>
 				<th>Semester</th>
 				<th>Aksi</th>
 			</thead>
@@ -37,6 +38,7 @@
 				<td>{{ $row->nama_alternatif }}</td>
 				<td>{{ $row->jenis_kelamin }}</td>
 				<td>{{ $row->prodi }}</td>
+				<td>{{ $row->nim }}</td>
 				<td>{{ $row->semester }}</td>
 				<td>
 					<a class="btn btn-xs btn-info" href="{{ route('alternatif.edit', $row) }}" {{ is_hidden('alternatif.edit') }}><i class="fa fa-edit"></i> Ubah</a>

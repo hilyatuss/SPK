@@ -10,5 +10,5 @@ class Mahasiswa extends Model
     protected $primaryKey = 'kode_alternatif';
     public $incrementing = false;
 
-    protected $fillable = ['kode_alternatif', 'nama_alternatif', 'jenis_kelamin', 'prodi', 'semester', 'nilai'];
+    protected $fillable = ['kode_alternatif', 'nama_alternatif', 'jenis_kelamin', 'prodi', 'nim', 'semester', 'nilai'];
 }

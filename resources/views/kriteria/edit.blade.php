@@ -15,15 +15,7 @@
 					</div>
 					<div class="form-group">
 						<label>Nama kriteria <span class="text-danger">*</span></label>
-						<input class="form-control" type="text" name="nama_kriteria" value="{{ old('nama_kriteria', $row->nama_kriteria) }}">
-					</div>
-					<div class="form-group">
-						<label>Range 1 <span class="text-danger">*</span></label>
-						<input class="form-control" type="text" name="range1" value="{{ old('range1', $row->range1) }}">
-					</div>
-					<div class="form-group">
-						<label>Range 2 <span class="text-danger">*</span></label>
-						<input class="form-control" type="text" name="range2" value="{{ old('range2', $row->range2) }}">
+						<input autocomplete="off" class="form-control" type="text" name="nama_kriteria" value="{{ old('nama_kriteria', $row->nama_kriteria) }}">
 					</div>
 					<div class="form-group">
 						<label>Atribut <span class="text-danger">*</span></label>
@@ -35,6 +27,34 @@
 						<label>Bobot <span class="text-danger">*</span></label>
 						<input class="form-control" type="text" name="bobot" value="{{ old('bobot', $row->bobot) }}" />
 					</div>
+					<div class="form-group">
+						<label>Range <span class="text-danger">*</span></label>
+						<div class="input-group control-group after-add-more">
+							<input type="text" autocomplete="off" name="range[]" value="{{ old('range', $row->range) }}" class="form-control" placeholder="Masukkan Data Range" value="{{ old('range') }}">
+							<div class="input-group-btn"> 
+								<button class="btn btn-success add-more" type="button"><i class="glyphicon glyphicon-plus"></i> Add</button>
+							</div>
+						</div>
+						<!-- Copy Fields -->
+						<div class="copy invisible">
+						<div class="control-group input-group" style="margin-top:10px">
+							<input type="text" autocomplete="off" name="range[]" class="form-control" placeholder="Masukkan Data Range">
+							<div class="input-group-btn"> 
+								<button class="btn btn-danger remove" type="button"><i class="glyphicon glyphicon-remove"></i> Remove</button>
+							</div>
+						</div>		
+					</div>
+					<script type="text/javascript">
+						$(document).ready(function() {
+							$(".add-more").click(function(){ 
+							var html = $(".copy").html();
+							$(".after-add-more").after(html);
+						});
+						$("body").on("click",".remove",function(){ 
+							$(this).parents(".control-group").remove();
+						});
+						});
+					</script>
 				</div>
 			</div>
 		</div>

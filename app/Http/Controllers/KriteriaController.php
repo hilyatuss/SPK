@@ -68,9 +68,6 @@ class KriteriaController extends Controller
             'bobot.required' => 'Bobot harus diisi',
         ]);
 
-        // $kriteria = new Kriteria($request->all());
-        // $kriteria->save();
-
         Kriteria::insert(
             array('kode_kriteria' => $request->kode_kriteria, 
             'nama_kriteria' => $request->nama_kriteria,
@@ -78,8 +75,12 @@ class KriteriaController extends Controller
             'bobot' =>  $request->bobot
         ));
 
-        foreach($request->range as $row){
-            // echo $row;
+        $count = count($request->range);
+        foreach($request->range as $key => $row){
+            if (--$count <= 0) {
+                break;
+            }
+        
             DB::table('tb_range')->insert(array(
                 'kode_kriteria' => $request->kode_kriteria,
                 'range' => $row
@@ -156,6 +157,7 @@ class KriteriaController extends Controller
     public function destroy(string $kriteria)
     {
         $kriteria = Kriteria::findOrFail($kriteria);
+        DB::table('tb_range')->where('kode_kriteria', $kriteria->kode_kriteria)->delete();
         $kriteria->delete();
         return redirect('kriteria')->with('message', 'Data berhasil dihapus!');
     }

@@ -21,6 +21,7 @@ Route::middleware(['auth', 'level'])->group(
     function () {
         Route::get('/', 'HomeController@show')->name('home')->middleware('auth');
 
+        Route::resource('/mahasiswa', 'MahasiswaController');
         Route::get('/alternatif/cetak', 'AlternatifController@cetak')->name('alternatif.cetak');
         Route::resource('/alternatif', 'AlternatifController');
         Route::get('/kriteria/cetak', 'KriteriaController@cetak')->name('kriteria.cetak');

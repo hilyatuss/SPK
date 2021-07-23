@@ -25,8 +25,7 @@
 				<th>No</th>
 				<th>Kode</th>
 				<th>Nama kriteria</th>
-				<th>Range 1</th>
-				<th>Range 2</th>
+				<th>Range</th>
 				<th>Atribut</th>
 				<th>Bobot</th>
 				<th>Aksi</th>
@@ -36,8 +35,14 @@
 				<td>{{ ($rows->currentPage() - 1) * $limit + $key + 1}}</td>
 				<td>{{ $row->kode_kriteria }}</td>
 				<td>{{ $row->nama_kriteria }}</td>
-				<td>{{ $row->range1 }}</td>
-				<td>{{ $row->range2 }}</td>
+				<td>
+					<?php
+						$query = DB::table('tb_range')->where('kode_kriteria', $row->kode_kriteria)->get();
+						foreach($query as $col){
+							echo $col->range. "<br>";
+						}
+					?>
+				</td>
 				<td>{{ $row->atribut }}</td>
 				<td>{{ $row->bobot }}</td>
 				<td>

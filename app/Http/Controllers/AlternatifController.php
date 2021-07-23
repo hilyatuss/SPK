@@ -130,6 +130,8 @@ class AlternatifController extends Controller
     {
         // query("DELETE FROM tb_rel_alternatif WHERE kode_alternatif=?", [$alternatif]);
         // $alternatif->delete();
+
+        DB::table('tb_rel_alternatif')->where('kode_alternatif', $alternatif->kode_alternatif)->delete();
         DB::table('tb_nilai')->where('kode_alternatif', $alternatif->kode_alternatif)->delete();
         Alternatif::where('kode_alternatif', $alternatif->kode_alternatif)->delete();
 

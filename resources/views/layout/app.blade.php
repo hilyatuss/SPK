@@ -17,12 +17,23 @@
     <link rel="stylesheet" href="{{asset('adminlte3/dist/css/adminlte.min.css')}}">
     <link rel="stylesheet" href="{{asset('adminlte3/plugins/flat-barometer/style.css')}}">
 
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="{{asset('adminlte3/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{{asset('adminlte3/plugins/toastr/toastr.min.css')}}">
+
     <!-- jQuery -->
     <script src="{{asset('adminlte3/plugins/jquery/jquery.min.js')}}"></script>
     <!-- Bootstrap 4 -->
     <script src="{{asset('adminlte3/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     <!-- AdminLTE App -->
     <script src="{{asset('adminlte3/dist/js/adminlte.min.js')}}"></script>
+    
+    <script src="{{asset('adminlte3/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
+    <!-- Toastr -->
+    <script src="{{asset('adminlte3/plugins/toastr/toastr.min.js')}}"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="{{asset('adminlte3/dist/js/demo.js')}}"></script>
 
     <link rel="stylesheet" href="{{asset('adminlte3/plugins/select2/css/select2.min.css')}}">
     <link rel="stylesheet" href="{{asset('adminlte3/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
@@ -33,6 +44,11 @@
             $('select:not(.default)').select2({
                 theme: 'bootstrap4',
             });
+        })
+    </script>
+    <script type="text/javascript">
+        $('#myModal').on('shown.bs.modal', function () {
+            $('#myInput').trigger('focus')
         })
     </script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
@@ -165,7 +181,7 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item" {{ is_hidden('mahasiswa.index') }}>
+                        <li class="nav-item" {{ is_hidden('mahasiswa.create') }}>
                             <a href="{{ route('mahasiswa.create') }}" class="nav-link">
                                 <i class="nav-icon far fa-copy text-primary"></i>
                                 <p>
@@ -228,6 +244,8 @@
         $('.form-control').attr('autocomplete', 'off');
     </script> -->
 
-</body>
+    
+
+    </body>
 
 </html>
