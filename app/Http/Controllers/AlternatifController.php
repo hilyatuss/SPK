@@ -109,13 +109,22 @@ class AlternatifController extends Controller
     {
         $request->validate([
             'nama_alternatif' => 'required',
+            'jenis_kelamin' => 'required',
             'prodi' => 'required',
+            'nim' => 'required',
+            'semester' => 'required',
         ], [
             'nama_alternatif.required' => 'Nama alternatif harus diisi',
+            'jenis_kelamin.required' => 'Jenis Kelamin harus diisi',
             'prodi.required' => 'Program Studi harus diisi',
+            'nim.required' => 'NIM harus diisi',
+            'semester.required' => 'Semester harus diisi',
         ]);
         $alternatif->nama_alternatif = $request->nama_alternatif;
+        $alternatif->jenis_kelamin = $request->jenis_kelamin;
         $alternatif->prodi = $request->prodi;
+        $alternatif->nim = $request->nim;
+        $alternatif->semester = $request->semester;
         $alternatif->save();
         return redirect('alternatif')->with('message', 'Data berhasil diubah!');
     }
@@ -132,7 +141,7 @@ class AlternatifController extends Controller
         // $alternatif->delete();
 
         DB::table('tb_rel_alternatif')->where('kode_alternatif', $alternatif->kode_alternatif)->delete();
-        DB::table('tb_nilai')->where('kode_alternatif', $alternatif->kode_alternatif)->delete();
+        // DB::table('tb_nilai')->where('kode_alternatif', $alternatif->kode_alternatif)->delete();
         Alternatif::where('kode_alternatif', $alternatif->kode_alternatif)->delete();
 
         return redirect('alternatif')->with('message', 'Data berhasil dihapus!');

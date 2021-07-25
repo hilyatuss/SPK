@@ -54,16 +54,12 @@ class KriteriaController extends Controller
         $request->validate([
             'kode_kriteria' => 'required|unique:tb_kriteria',
             'nama_kriteria' => 'required',
-            // 'range1' => 'required',
-            // 'range2' => 'required',
             'atribut' => 'required',
             'bobot' => 'required',
         ], [
             'kode_kriteria.required' => 'Kode kriteria harus diisi',
             'kode_kriteria.unique' => 'Kode kriteria harus unik',
             'nama_kriteria.required' => 'Nama kriteria harus diisi',
-            // 'range1.required' => 'Range1 harus diisi',
-            // 'range2.required' => 'Range2 harus diisi',
             'atribut.required' => 'Atribut harus diisi',
             'bobot.required' => 'Bobot harus diisi',
         ]);
@@ -127,24 +123,33 @@ class KriteriaController extends Controller
     {
         $request->validate([
             'nama_kriteria' => 'required',
-            'range1' => 'required',
-            'range2' => 'required',
+            'range' => 'required',
             'atribut' => 'required',
             'bobot' => 'required',
         ], [
             'nama_kriteria.required' => 'Nama kriteria harus diisi',
-            'range1.required' => 'Range1 harus diisi',
-            'range2.required' => 'Range2 harus diisi',
+            'range.required' => 'Range harus diisi',
             'atribut.required' => 'Atribut harus diisi',
             'bobot.required' => 'Bobot harus diisi',
         ]);
-        $kriteria = Kriteria::findOrFail($kriteria);
-        $kriteria->nama_kriteria = $request->nama_kriteria;
-        $kriteria->range1 = $request->range1;
-        $kriteria->range2 = $request->range2;
-        $kriteria->atribut = $request->atribut;
-        $kriteria->bobot = $request->bobot;
-        $kriteria->save();
+
+        Kriteria::where('kode_kriteria', '=', $request->kode_kriteria)->update(
+            array( 
+            'nama_kriteria' => $request->nama_kriteria,
+            'atribut' => $request->atribut,
+            'bobot' =>  $request->bobot
+        ));
+
+        DB::table('tb_range')->where('kode_kriteria', '=', $request->kode_kriteria)->delete();
+
+        foreach($request->range as $key => $row){
+            DB::table('tb_range')->insert(array(
+                'kode_kriteria' => $request->kode_kriteria,
+                'range' => $row
+            ));
+            
+        }
+
         return redirect('kriteria')->with('message', 'Data berhasil diubah!');
     }
 
@@ -158,7 +163,8 @@ class KriteriaController extends Controller
     {
         $kriteria = Kriteria::findOrFail($kriteria);
         DB::table('tb_range')->where('kode_kriteria', $kriteria->kode_kriteria)->delete();
-        $kriteria->delete();
+        Kriteria::where('kode_kriteria', $kriteria->kode_kriteria)->delete();
+        // $kriteria->delete();
         return redirect('kriteria')->with('message', 'Data berhasil dihapus!');
     }
 }

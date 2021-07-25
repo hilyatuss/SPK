@@ -31,8 +31,10 @@ class Rel_AlternatifController extends Controller
         $data['rows'] = Alternatif::with(['nilais'])->where('nama_alternatif', 'like', '%' . $data['q'] . '%')
             ->orderBy('kode_alternatif')
             ->paginate($data['limit'])->withQueryString();
+
         $data['kriterias'] = Kriteria::all();
         return view('rel_alternatif.index', $data);
+        // echo json_encode($data['rows']);
     }
 
     /**

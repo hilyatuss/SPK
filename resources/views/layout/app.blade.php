@@ -11,17 +11,19 @@
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- Font Awesome -->
+   
+    <!--Font Awesome-->
     <link rel="stylesheet" href="{{asset('adminlte3/plugins/fontawesome-free/css/all.min.css')}}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{asset('adminlte3/dist/css/adminlte.min.css')}}">
     <link rel="stylesheet" href="{{asset('adminlte3/plugins/flat-barometer/style.css')}}">
-
+    <!-- daterange picker -->
+  <link rel="stylesheet" href="{{asset('adminlte3/plugins/daterangepicker/daterangepicker.css')}}">
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="{{asset('adminlte3/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
     <!-- Toastr -->
     <link rel="stylesheet" href="{{asset('adminlte3/plugins/toastr/toastr.min.css')}}">
-
+    
     <!-- jQuery -->
     <script src="{{asset('adminlte3/plugins/jquery/jquery.min.js')}}"></script>
     <!-- Bootstrap 4 -->
@@ -34,11 +36,15 @@
     <script src="{{asset('adminlte3/plugins/toastr/toastr.min.js')}}"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{asset('adminlte3/dist/js/demo.js')}}"></script>
-
+   
     <link rel="stylesheet" href="{{asset('adminlte3/plugins/select2/css/select2.min.css')}}">
+    
     <link rel="stylesheet" href="{{asset('adminlte3/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
+    
     <script src="{{ asset('adminlte3/plugins/select2/js/select2.min.js') }}"></script>
+    
     <script src="{{ asset('adminlte3/plugins/flat-barometer/script.js') }}"></script>
+    
     <script>
         $(function() {
             $('select:not(.default)').select2({
@@ -134,7 +140,7 @@
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                         <li class="nav-item" {{ is_hidden('home') }}>
-                            <a href="{{ route('home') }}" class="nav-link">
+                            <a href="{{ route('home') }}" class="nav-link {{active('home')}}">
                                 <i class="nav-icon fas fa-th text-primary"></i>
                                 <p>
                                     Home
@@ -142,23 +148,31 @@
                             </a>
                         </li>
                         <li class="nav-item" {{ is_hidden('user.index') }}>
-                            <a href="{{ route('user.index') }}" class="nav-link">
+                            <a href="{{ route('user.index') }}" class="nav-link {{active('user.index')}}">
                                 <i class="nav-icon fas fa-users text-primary"></i>
                                 <p>
                                     User
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item" {{ is_hidden('periode.index') }}>
+                            <a href="{{ route('periode.index') }}" class="nav-link {{active('home')}}">
+                                <i class="nav-icon far fa-clock text-primary"></i>
+                                <p>
+                                    Periode Beasiswa
+                                </p>
+                            </a>
+                        </li>
                         <li class="nav-item" {{ is_hidden('kriteria.index') }}>
-                            <a href="{{ route('kriteria.index') }}" class="nav-link">
+                            <a href="{{ route('kriteria.index') }}" class="nav-link {{active('kriteria.index')}}">
                                 <i class="nav-icon far fa-edit text-primary"></i>
                                 <p>
-                                    Kriteria
+                                    Data Kriteria
                                 </p>
                             </a>
                         </li>
                         <li class="nav-item" {{ is_hidden('alternatif.index') }}>
-                            <a href="{{ route('alternatif.index') }}" class="nav-link">
+                            <a href="{{ route('alternatif.index') }}" class="nav-link {{active('alternatif.index')}}">
                                 <i class="nav-icon far fa-circle text-primary"></i>
                                 <p>
                                     Data Alternatif
@@ -166,7 +180,7 @@
                             </a>
                         </li>
                         <li class="nav-item" {{ is_hidden('rel_alternatif.index') }}>
-                            <a href="{{ route('rel_alternatif.index') }}" class="nav-link">
+                            <a href="{{ route('rel_alternatif.index') }}" class="nav-link {{active('rel_alternatif.index')}}">
                                 <i class="nav-icon fas fa-chart-pie text-primary"></i>
                                 <p>
                                     Nilai Alternatif
@@ -174,7 +188,7 @@
                             </a>
                         </li>
                         <li class="nav-item" {{ is_hidden('hitung.index') }}>
-                            <a href="{{ route('hitung.index') }}" class="nav-link">
+                            <a href="{{ route('hitung.index') }}" class="nav-link {{active('hitung.index')}}">
                                 <i class="nav-icon far fa-copy text-primary"></i>
                                 <p>
                                     Hasil Perhitungan
@@ -182,7 +196,7 @@
                             </a>
                         </li>
                         <li class="nav-item" {{ is_hidden('mahasiswa.create') }}>
-                            <a href="{{ route('mahasiswa.create') }}" class="nav-link">
+                            <a href="{{ route('mahasiswa.create') }}" class="nav-link {{active('mahasiswa.create')}}">
                                 <i class="nav-icon far fa-copy text-primary"></i>
                                 <p>
                                     Daftar Beasiswa Bidikmisi
@@ -242,9 +256,7 @@
     <!-- ./wrapper -->
     <!-- <script type="text/javascript">
         $('.form-control').attr('autocomplete', 'off');
-    </script> -->
-
-    
+    </script>  -->
 
     </body>
 

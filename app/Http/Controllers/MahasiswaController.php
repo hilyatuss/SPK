@@ -6,7 +6,9 @@ use App\Models\Alternatif;
 use App\Models\Kriteria;
 use App\Models\Mahasiswa;
 use App\Models\Nilai;
+use App\Models\Rel_Alternatif;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use DB;
 use Carbon\Carbon;
 
@@ -25,6 +27,7 @@ class MahasiswaController extends Controller
     {
         $data['title'] = 'Daftar Beasiswa Bidikmisi';
         $data['kriterias'] = Kriteria::all();
+        $data['periode'] = DB::table('tb_periode')->latest('selesai')->first();
         return view('mahasiswa.create', $data);
     }
 
@@ -36,8 +39,8 @@ class MahasiswaController extends Controller
             'nama_alternatif' => 'required',
             'jenis_kelamin' => 'required',
             'prodi' => 'required',
-            'nim' => 'required',
-            'semester' => 'required',
+            'nim' => 'required|min:9',
+            'semester' => 'required'
         ], [
             'kode_alternatif.required' => 'Kode alternatif harus diisi',
             'kode_alternatif.unique' => 'Kode alternatif harus unik',
@@ -45,11 +48,15 @@ class MahasiswaController extends Controller
             'jenis_kelamin.required' => 'Jenis Kelamin harus diisi',
             'prodi.required' => 'Prodi harus diisi',
             'nim.required' => 'NIM harus diisi',
-            'semester.required' => 'Semester harus diisi',
+            'nim.min' => 'NIM salah',
+            'semester.required' => 'Semester harus diisi'
         ]);
+
+        $periode = DB::table('tb_periode')->latest('selesai')->first();
 
         DB::table('tb_alternatif')->insert(
             array('kode_alternatif' => $request->kode_alternatif, 
+            'periode_id' => $periode->ID,
             'nama_alternatif' => $request->nama_alternatif,
             'jenis_kelamin' => $request->jenis_kelamin,
             'prodi' =>  $request->prodi,
@@ -60,103 +67,247 @@ class MahasiswaController extends Controller
 
         $kriteria = Kriteria::all();
         $kriteria->nilai = "0";
-        foreach($kriteria as $col){
+        // $request->validate([
+        //     'file' => 'required',
+        //     'file.*' => 'mimes:PDF,pdf|max:20000'
+        // ]);
+        
+        foreach($kriteria as $no => $col){
             $namaFile = Carbon::now()->timestamp;
             
-            // $range = DB::table('tb_range')->where('kode_kriteria', '=', $col->kode_kriteria)->get();
             
-            // foreach($range as $isi){
-            //     if(empty($isi->range)){
-            //         echo "ID: ".$isi->kode_kriteria." KOSONGG";
-            //     }
-            // }
-
             if($col->atribut == "cost"){
                 if($request->nilai[$col->kode_kriteria] == 0){
-                    DB::table('tb_rel_alternatif')->insert(
-                        array( 
-                        'kode_alternatif' => $request->kode_alternatif,
-                        'kode_kriteria' => $col->kode_kriteria,
-                        'nilai' => 5,
-        
-                    ));
+                    if ($request->hasfile('file')) { 
+                            $filename = $request->file('file');
+                            if ($filename[$col->kode_kriteria]->isValid()) {
+                                $file = round(microtime(true) * 1000).'-'.str_replace(' ','-',$filename[$col->kode_kriteria]->getClientOriginalName());
+                                $filename[$col->kode_kriteria]->move(public_path('document'), $file);            
+                                DB::table('tb_rel_alternatif')->insert(
+                                    array( 
+                                    'kode_alternatif' => $request->kode_alternatif,
+                                    'kode_kriteria' => $col->kode_kriteria,
+                                    'nilai' => 1,
+                                    'file' => $file
+                                ));
+                            }
+                    }else{
+                        DB::table('tb_rel_alternatif')->insert(
+                            array( 
+                            'kode_alternatif' => $request->kode_alternatif,
+                            'kode_kriteria' => $col->kode_kriteria,
+                            'nilai' => 1,
+                        ));
+                    }
+                    
+                    
                 }else if($request->nilai[$col->kode_kriteria] == 1){
-                    DB::table('tb_rel_alternatif')->insert(
-                        array( 
-                        'kode_alternatif' => $request->kode_alternatif,
-                        'kode_kriteria' => $col->kode_kriteria,
-                        'nilai' => 4,
-        
-                    ));
+                    if ($request->hasfile('file')) { 
+                        $filename = $request->file('file');
+                        if ($filename[$col->kode_kriteria]->isValid()) {
+                            $file = round(microtime(true) * 1000).'-'.str_replace(' ','-',$filename[$col->kode_kriteria]->getClientOriginalName());
+                            $filename[$col->kode_kriteria]->move(public_path('document'), $file);            
+                            DB::table('tb_rel_alternatif')->insert(
+                                array( 
+                                'kode_alternatif' => $request->kode_alternatif,
+                                'kode_kriteria' => $col->kode_kriteria,
+                                'nilai' => 2,
+                                'file' => $file
+                            ));
+                        }
+                    }else{
+                        DB::table('tb_rel_alternatif')->insert(
+                            array( 
+                            'kode_alternatif' => $request->kode_alternatif,
+                            'kode_kriteria' => $col->kode_kriteria,
+                            'nilai' => 2,
+                        ));
+                    }
                 }else if($request->nilai[$col->kode_kriteria] == 2){
-                    DB::table('tb_rel_alternatif')->insert(
-                        array( 
-                        'kode_alternatif' => $request->kode_alternatif,
-                        'kode_kriteria' => $col->kode_kriteria,
-                        'nilai' => 3,
-        
-                    ));
+                    if ($request->hasfile('file')) { 
+                        $filename = $request->file('file');
+                        if ($filename[$col->kode_kriteria]->isValid()) {
+                            $file = round(microtime(true) * 1000).'-'.str_replace(' ','-',$filename[$col->kode_kriteria]->getClientOriginalName());
+                            $filename[$col->kode_kriteria]->move(public_path('document'), $file);            
+                            DB::table('tb_rel_alternatif')->insert(
+                                array( 
+                                'kode_alternatif' => $request->kode_alternatif,
+                                'kode_kriteria' => $col->kode_kriteria,
+                                'nilai' => 3,
+                                'file' => $file
+                            ));
+                        }
+                    }else{
+                        DB::table('tb_rel_alternatif')->insert(
+                            array( 
+                            'kode_alternatif' => $request->kode_alternatif,
+                            'kode_kriteria' => $col->kode_kriteria,
+                            'nilai' => 3,
+                        ));
+                    }
                 }else if($request->nilai[$col->kode_kriteria] == 3){
-                    DB::table('tb_rel_alternatif')->insert(
-                        array( 
-                        'kode_alternatif' => $request->kode_alternatif,
-                        'kode_kriteria' => $col->kode_kriteria,
-                        'nilai' => 2,
-        
-                    ));
+                    if ($request->hasfile('file')) { 
+                        $filename = $request->file('file');
+                        if ($filename[$col->kode_kriteria]->isValid()) {
+                            $file = round(microtime(true) * 1000).'-'.str_replace(' ','-',$filename[$col->kode_kriteria]->getClientOriginalName());
+                            $filename[$col->kode_kriteria]->move(public_path('document'), $file);            
+                            DB::table('tb_rel_alternatif')->insert(
+                                array( 
+                                'kode_alternatif' => $request->kode_alternatif,
+                                'kode_kriteria' => $col->kode_kriteria,
+                                'nilai' => 4,
+                                'file' => $file
+                            ));
+                        }
+                    }else{
+                        DB::table('tb_rel_alternatif')->insert(
+                            array( 
+                            'kode_alternatif' => $request->kode_alternatif,
+                            'kode_kriteria' => $col->kode_kriteria,
+                            'nilai' => 4,
+                        ));
+                    }
                 }else if($request->nilai[$col->kode_kriteria] == 4){
-                    DB::table('tb_rel_alternatif')->insert(
-                        array( 
-                        'kode_alternatif' => $request->kode_alternatif,
-                        'kode_kriteria' => $col->kode_kriteria,
-                        'nilai' => 1,
-        
-                    ));
+                    if ($request->hasfile('file')) { 
+                        $filename = $request->file('file');
+                        if ($filename[$col->kode_kriteria]->isValid()) {
+                            $file = round(microtime(true) * 1000).'-'.str_replace(' ','-',$filename[$col->kode_kriteria]->getClientOriginalName());
+                            $filename[$col->kode_kriteria]->move(public_path('document'), $file);            
+                            DB::table('tb_rel_alternatif')->insert(
+                                array( 
+                                'kode_alternatif' => $request->kode_alternatif,
+                                'kode_kriteria' => $col->kode_kriteria,
+                                'nilai' => 5,
+                                'file' => $file
+                            ));
+                        }
+                    }else{
+                        DB::table('tb_rel_alternatif')->insert(
+                            array( 
+                            'kode_alternatif' => $request->kode_alternatif,
+                            'kode_kriteria' => $col->kode_kriteria,
+                            'nilai' => 5,
+                        ));
+                    }
                 }
             }else if($col->atribut == "benefit"){
                 if($request->nilai[$col->kode_kriteria] == 0){
-                    DB::table('tb_rel_alternatif')->insert(
-                        array( 
-                        'kode_alternatif' => $request->kode_alternatif,
-                        'kode_kriteria' => $col->kode_kriteria,
-                        'nilai' => 5,
-        
-                    ));
+                    if ($request->hasfile('file')) { 
+                            $filename = $request->file('file');
+                            if ($filename[$col->kode_kriteria]->isValid()) {
+                                $file = round(microtime(true) * 1000).'-'.str_replace(' ','-',$filename[$col->kode_kriteria]->getClientOriginalName());
+                                $filename[$col->kode_kriteria]->move(public_path('document'), $file);            
+                                DB::table('tb_rel_alternatif')->insert(
+                                    array( 
+                                    'kode_alternatif' => $request->kode_alternatif,
+                                    'kode_kriteria' => $col->kode_kriteria,
+                                    'nilai' => 5,
+                                    'file' => $file
+                                ));
+                            }
+    
+                    }else{
+                        DB::table('tb_rel_alternatif')->insert(
+                            array( 
+                            'kode_alternatif' => $request->kode_alternatif,
+                            'kode_kriteria' => $col->kode_kriteria,
+                            'nilai' => 5,
+                        ));
+                    }
                 }else if($request->nilai[$col->kode_kriteria] == 1){
-                    DB::table('tb_rel_alternatif')->insert(
-                        array( 
-                        'kode_alternatif' => $request->kode_alternatif,
-                        'kode_kriteria' => $col->kode_kriteria,
-                        'nilai' => 4,
-        
-                    ));
+                    if ($request->hasfile('file')) { 
+                            $filename = $request->file('file');
+                            if ($filename[$col->kode_kriteria]->isValid()) {
+                                $file = round(microtime(true) * 1000).'-'.str_replace(' ','-',$filename[$col->kode_kriteria]->getClientOriginalName());
+                                $filename[$col->kode_kriteria]->move(public_path('document'), $file);            
+                                DB::table('tb_rel_alternatif')->insert(
+                                    array( 
+                                    'kode_alternatif' => $request->kode_alternatif,
+                                    'kode_kriteria' => $col->kode_kriteria,
+                                    'nilai' => 4,
+                                    'file' => $file
+                                ));
+                            }
+    
+                    }else{
+                        DB::table('tb_rel_alternatif')->insert(
+                            array( 
+                            'kode_alternatif' => $request->kode_alternatif,
+                            'kode_kriteria' => $col->kode_kriteria,
+                            'nilai' => 4,
+                        ));
+                    }
                 }else if($request->nilai[$col->kode_kriteria] == 2){
-                    DB::table('tb_rel_alternatif')->insert(
-                        array( 
-                        'kode_alternatif' => $request->kode_alternatif,
-                        'kode_kriteria' => $col->kode_kriteria,
-                        'nilai' => 3,
-        
-                    ));
+                    if ($request->hasfile('file')) { 
+                            $filename = $request->file('file');
+                            if ($filename[$col->kode_kriteria]->isValid()) {
+                                $file = round(microtime(true) * 1000).'-'.str_replace(' ','-',$filename[$col->kode_kriteria]->getClientOriginalName());
+                                $filename[$col->kode_kriteria]->move(public_path('document'), $file);            
+                                DB::table('tb_rel_alternatif')->insert(
+                                    array( 
+                                    'kode_alternatif' => $request->kode_alternatif,
+                                    'kode_kriteria' => $col->kode_kriteria,
+                                    'nilai' => 3,
+                                    'file' => $file
+                                ));
+                            }
+    
+                    }else{
+                        DB::table('tb_rel_alternatif')->insert(
+                            array( 
+                            'kode_alternatif' => $request->kode_alternatif,
+                            'kode_kriteria' => $col->kode_kriteria,
+                            'nilai' => 3,
+                        ));
+                    }
                 }else if($request->nilai[$col->kode_kriteria] == 3){
-                    DB::table('tb_rel_alternatif')->insert(
-                        array( 
-                        'kode_alternatif' => $request->kode_alternatif,
-                        'kode_kriteria' => $col->kode_kriteria,
-                        'nilai' => 2,
-        
-                    ));
+                    if ($request->hasfile('file')) { 
+                            $filename = $request->file('file');
+                            if ($filename[$col->kode_kriteria]->isValid()) {
+                                $file = round(microtime(true) * 1000).'-'.str_replace(' ','-',$filename[$col->kode_kriteria]->getClientOriginalName());
+                                $filename[$col->kode_kriteria]->move(public_path('document'), $file);            
+                                DB::table('tb_rel_alternatif')->insert(
+                                    array( 
+                                    'kode_alternatif' => $request->kode_alternatif,
+                                    'kode_kriteria' => $col->kode_kriteria,
+                                    'nilai' => 2,
+                                    'file' => $file
+                                ));
+                            }
+    
+                    }else{
+                        DB::table('tb_rel_alternatif')->insert(
+                            array( 
+                            'kode_alternatif' => $request->kode_alternatif,
+                            'kode_kriteria' => $col->kode_kriteria,
+                            'nilai' => 2,
+                        ));
+                    }
                 }else if($request->nilai[$col->kode_kriteria] == 4){
-                    DB::table('tb_rel_alternatif')->insert(
-                        array( 
-                        'kode_alternatif' => $request->kode_alternatif,
-                        'kode_kriteria' => $col->kode_kriteria,
-                        'nilai' => 1,
-        
-                    ));
+                    if ($request->hasfile('file')) { 
+                            $filename = $request->file('file');
+                            if ($filename[$col->kode_kriteria]->isValid()) {
+                                $file = round(microtime(true) * 1000).'-'.str_replace(' ','-',$filename[$col->kode_kriteria]->getClientOriginalName());
+                                $filename[$col->kode_kriteria]->move(public_path('document'), $file);            
+                                DB::table('tb_rel_alternatif')->insert(
+                                    array( 
+                                    'kode_alternatif' => $request->kode_alternatif,
+                                    'kode_kriteria' => $col->kode_kriteria,
+                                    'nilai' => 1,
+                                    'file' => $file
+                                ));
+                            }
+    
+                    }else{
+                        DB::table('tb_rel_alternatif')->insert(
+                            array( 
+                            'kode_alternatif' => $request->kode_alternatif,
+                            'kode_kriteria' => $col->kode_kriteria,
+                            'nilai' => 1,
+                        ));
+                    }
                 }
             }
-            return redirect('mahasiswa')->with('message', 'Data berhasil ditambah!');
 
             // if($request->hasfile('file')){
             //     $request->file("filename[".$col->kode_kriteria."]")->move(public_path().'/images/', $namaFile);  
@@ -175,7 +326,7 @@ class MahasiswaController extends Controller
             //     ));
             // }
         }
-
+        return redirect('mahasiswa')->with('message', 'Pendaftaran Berhasil!');
     }
 
 }

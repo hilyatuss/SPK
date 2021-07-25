@@ -4,6 +4,7 @@ use App\Http\Controllers\HitungController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,7 @@ Route::middleware(['auth', 'level'])->group(
         Route::resource('/mahasiswa', 'MahasiswaController');
         Route::get('/alternatif/cetak', 'AlternatifController@cetak')->name('alternatif.cetak');
         Route::resource('/alternatif', 'AlternatifController');
+        Route::resource('/periode', 'PeriodeController');
         Route::get('/kriteria/cetak', 'KriteriaController@cetak')->name('kriteria.cetak');
         Route::resource('/kriteria', 'KriteriaController');
         Route::get('/rel_alternatif/cetak', 'Rel_AlternatifController@cetak')->name('rel_alternatif.cetak');

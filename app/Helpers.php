@@ -26,6 +26,7 @@ function is_able($action)
             'home',
             'user.password', 'user.password.update', 'user.logout', 'user.profil', 'user.profil.update',
             'user.index', 'user.create', 'user.store', 'user.edit', 'user.update', 'user.destroy',
+            'periode.index', 'periode.cetak', 'periode.create', 'periode.store', 'periode.edit', 'periode.update', 'periode.destroy',
             'kriteria.index', 'kriteria.cetak', 'kriteria.create', 'kriteria.store', 'kriteria.edit', 'kriteria.update', 'kriteria.destroy',
             'alternatif.index', 'alternatif.cetak', 'alternatif.create', 'alternatif.store', 'alternatif.edit', 'alternatif.update', 'alternatif.destroy',
             'rel_alternatif.index', 'rel_alternatif.cetak', 'rel_alternatif.edit', 'rel_alternatif.update',
@@ -35,7 +36,7 @@ function is_able($action)
         'mhs' => [
             'home',
             'user.password', 'user.password.update', 'user.logout', 'user.profil', 'user.profil.update',
-            'mahasiswa.index', 'mahasiswa.create', 'mahasiswa.store',
+            'mahasiswa.index', 'mahasiswa.create', 'mahasiswa.store', 'mahasiswa.information',
         ]
     ];
     $user = Auth::user();
@@ -130,7 +131,6 @@ function get_status_user_option($selected = '')
 function get_jenis_kelamin_option($selected = '')
 {
     $arr = [
-        '-' => '-',
         'Laki-laki' => 'Laki-Laki',
         'Perempuan' => 'Perempuan'     
     ];
@@ -253,6 +253,10 @@ function get_var($sql = '')
 function query($sql, $params = [])
 {
     return DB::statement($sql, $params);
+}
+
+function active($action){
+    return Request::is($action) ? 'active' :  '';
 }
 
 // function get_desa_option($selected = '', $id_kecamatan)

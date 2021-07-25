@@ -11,5 +11,5 @@ class Kriteria extends Model
     protected $primaryKey = 'kode_kriteria';
     public $incrementing = false;
 
-    protected $fillable = ['kode_kriteria', 'nama_kriteria','range1', 'range2', 'atribut', 'bobot'];
+    protected $fillable = ['kode_kriteria', 'nama_kriteria','range',  'atribut', 'bobot'];
 }

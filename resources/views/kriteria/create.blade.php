@@ -14,7 +14,7 @@
 					</div>
 					<div class="form-group">
 						<label>Nama kriteria <span class="text-danger">*</span></label>
-						<input class="form-control" autocomplete="off" type="text" name="nama_kriteria" value="{{ old('nama_kriteria') }}" />
+						<input class="form-control" autocomplete="off" type="text" name="nama_kriteria" value="{{ old('nama_kriteria') }}" required />
 					</div>
 					<div class="form-group">
 						<label>Atribut <span class="text-danger">*</span></label>

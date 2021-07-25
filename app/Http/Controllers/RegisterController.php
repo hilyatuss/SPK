@@ -17,13 +17,14 @@ class RegisterController extends Controller
         $request->validate([
             'nama_user' => 'required',
             'username' => 'required|unique:tb_user',
-            'password' => 'required|confirmed',
+            'password' => 'required|min:8|confirmed',
         ], [
             'nama_user.required' => 'Nama user harus diisi',
             'username.required' => 'Username harus diisi',
             'username.unique' => 'Username harus unik',
             'password.required' => 'Password harus diisi',
-            'password.confirmed'    => 'Password tidak sama dengan konfirmasi password'
+            'password.min' => 'Password minimal 8 karakter',
+            'password.confirmed' => 'Password tidak sama dengan konfirmasi password'
         ]);
         $user = new User($request->all());
         $user->password = Hash::make($request->password);

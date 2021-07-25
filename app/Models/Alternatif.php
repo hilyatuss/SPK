@@ -14,6 +14,6 @@ class Alternatif extends Model
 
     public function nilais()
     {
-        return $this->belongsToMany(Kriteria::class, 'tb_rel_alternatif', 'kode_alternatif', 'kode_kriteria')->withPivot('ID', 'nilai');
+        return $this->belongsToMany(Kriteria::class, 'tb_rel_alternatif', 'kode_alternatif', 'kode_kriteria')->withPivot('ID', 'nilai', 'file');
     }
 }
