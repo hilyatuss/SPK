@@ -21,7 +21,7 @@
 			<?php
 				$date_now = date("Y-m-d"); 
 
-				if ($date_now > $periode->selesai || $date_now < $periode->mulai) {
+				if ($date_now > $periode->selesai && $date_now < $periode->mulai) {
 					echo "
 					<div class='col-md-4 right'>
 						<button type='button' class='btn btn-primary'  data-toggle='modal' data-target='#modal-add' disabled>

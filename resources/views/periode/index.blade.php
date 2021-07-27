@@ -27,7 +27,7 @@
                     <td>{{ $no+1 }} </td>
                     <td><?php $tgl = explode("-", $row->mulai); echo $tgl[2]."-".$tgl[1]."-".$tgl[0];?></td>
                     <td><?php $tgl = explode("-", $row->selesai); echo $tgl[2]."-".$tgl[1]."-".$tgl[0];?></td>
-                    @if(date("Y-m-d") < $row->selesai || date("Y-m-d") > $row->mulai)
+                    @if(date("Y-m-d") < $row->selesai && date("Y-m-d") > $row->mulai)
                         <td>Buka</td>
                     @else
                         <td>Tutup</td>

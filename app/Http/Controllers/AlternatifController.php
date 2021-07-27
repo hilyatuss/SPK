@@ -12,7 +12,7 @@ class AlternatifController extends Controller
     public function cetak()
     {
         $data['title'] = 'Laporan Data Alternatif';
-        $data['rows'] = Alternatif::orderBy('nim')->get();
+        $data['rows'] = Alternatif::join('tb_user', 'tb_alternatif.user_id', '=', 'tb_user.id')->orderBy('nim')->get();
         $data['tgl'] = Carbon::now()->locale('id')->isoFormat('LL');
         return view('alternatif.cetak', $data);
     }
