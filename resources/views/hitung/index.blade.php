@@ -53,7 +53,7 @@
             @foreach($wp->rel_alternatif as $key => $val)
             <tr>
                 <td>{{ $key }}</td>
-                <td>{{ $alternatifs[$key]->nama_alternatif }}</td>
+                <td>{{ $alternatifs[$key]->nama_user }}</td>
                 @foreach($val as $k => $v)
                 <td>{{ round($v, 4) }}</td>
                 @endforeach
@@ -104,7 +104,7 @@
             <tr>
                 <td>{{ $val }}</td>
                 <td>{{ $key }}</td>
-                <td>{{ $alternatifs[$key]->nama_alternatif }}</td>
+                <td>{{ $alternatifs[$key]->nama_user }}</td>
                 <td>{{ round($wp->vektor_s[$key], 4) }}</td>
                 <td>{{ round($wp->vektor_v[$key], 4) }}</td>
             </tr>

@@ -31,6 +31,6 @@ class RegisterController extends Controller
         $user->level = "mhs";
         $user->status_user = "1";
         $user->save();
-        return redirect('user')->with('message', 'Data berhasil ditambah!');
+        return redirect('login')->with('message', 'Data berhasil ditambah!');
     }
 }

@@ -83,7 +83,7 @@ class KriteriaController extends Controller
             ));
         }
 
-        query("INSERT INTO tb_rel_alternatif (kode_alternatif, kode_kriteria) SELECT kode_alternatif, ? FROM tb_alternatif", [$request->kode_kriteria]);
+        query("INSERT INTO tb_rel_alternatif (nim, kode_kriteria) SELECT nim, ? FROM tb_alternatif", [$request->kode_kriteria]);
 
         return redirect('kriteria')->with('message', 'Data berhasil ditambah!');
     }

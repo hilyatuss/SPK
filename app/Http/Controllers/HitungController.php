@@ -13,12 +13,12 @@ class HitungController extends Controller
 {
     function index()
     {
-        $alternatif  = Alternatif::with(['nilais'])->get();
+        $alternatif  = Alternatif::join('tb_user', 'tb_alternatif.user_id', '=', 'tb_user.id')->with(['nilais'])->get();
         $rel_alternatif = array();
         foreach ($alternatif as $row) {
             foreach ($row->nilais as $nilai) {
-                $rel_alternatif[$row->kode_alternatif][$nilai->kode_kriteria] = $nilai->pivot->nilai;
-                $data['alternatifs'][$row->kode_alternatif] = $row;
+                $rel_alternatif[$row->nim][$nilai->kode_kriteria] = $nilai->pivot->nilai;
+                $data['alternatifs'][$row->nim] = $row;
             }
         }
 
@@ -46,7 +46,7 @@ class HitungController extends Controller
     function cetak()
     {
         $data['title'] = 'Laporan Hasil Perhitungan';
-        $data['rows'] = Alternatif::orderBy('rank')->get();
+        $data['rows'] = Alternatif::join('tb_user', 'tb_alternatif.user_id', '=', 'tb_user.id')->orderBy('rank')->get();
         $data['tgl'] = Carbon::now()->locale('id')->isoFormat('LL');
         return view('hitung.cetak', $data);
     }

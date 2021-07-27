@@ -13,7 +13,7 @@
     @foreach($rows as $row)
     <tr>
         <td>{{ $row->rank }}</td>
-        <td>{{ $row->nama_alternatif }}</td>
+        <td>{{ $row->nama_user }}</td>
         <td>{{ $row->jenis_kelamin }}</td>
         <td>{{ $row->prodi }}</td>
         <td>{{ $row->semester }}</td>

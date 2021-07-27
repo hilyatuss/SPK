@@ -27,7 +27,7 @@
                     <td>{{ $no+1 }} </td>
                     <td><?php $tgl = explode("-", $row->mulai); echo $tgl[2]."-".$tgl[1]."-".$tgl[0];?></td>
                     <td><?php $tgl = explode("-", $row->selesai); echo $tgl[2]."-".$tgl[1]."-".$tgl[0];?></td>
-                    @if($row->status == "1")
+                    @if(date("Y-m-d") < $row->selesai || date("Y-m-d") > $row->mulai)
                         <td>Buka</td>
                     @else
                         <td>Tutup</td>
@@ -68,17 +68,6 @@
 							<div class="form-group">
                                 <label>Dimulai</label>
                                 <input type="date" class="form-control datetimepicker-input" name="mulai" value="{{ old('mulai') }}" />
-                            </div>
-                            <div class="form-group">
-                                <label>Status <span class="text-danger">*</span></label>
-                                <select class="form-control @error('status') is-invalid @enderror" name="status" required>
-                                    <option value selected="selected">-- Pilih Status --</option>
-                                    <option value="0">Tutup</option>
-                                    <option value="1">Buka</option>
-                                </select>
-                                @error('semester')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
                             </div>
                         </div>
                         <div class="col-md-6">

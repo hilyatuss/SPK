@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use DB;
 use Carbon\Carbon;
+use Auth;
 
 class MahasiswaController extends Controller
 {
@@ -28,6 +29,7 @@ class MahasiswaController extends Controller
         $data['title'] = 'Daftar Beasiswa Bidikmisi';
         $data['kriterias'] = Kriteria::all();
         $data['periode'] = DB::table('tb_periode')->latest('selesai')->first();
+        $data['user'] = Auth::user();
         return view('mahasiswa.create', $data);
     }
 
@@ -35,32 +37,28 @@ class MahasiswaController extends Controller
     {
       
         $request->validate([
-            'kode_alternatif' => 'required|unique:tb_alternatif',
-            'nama_alternatif' => 'required',
+            'nim' => 'required|unique:tb_alternatif',
             'jenis_kelamin' => 'required',
             'prodi' => 'required',
-            'nim' => 'required|min:9',
             'semester' => 'required'
         ], [
-            'kode_alternatif.required' => 'Kode alternatif harus diisi',
-            'kode_alternatif.unique' => 'Kode alternatif harus unik',
+            'nim.required' => 'NIM harus diisi',
+            'nim.min' => 'NIM salah',
             'nama_alternatif.required' => 'Nama Lengkap harus diisi',
             'jenis_kelamin.required' => 'Jenis Kelamin harus diisi',
             'prodi.required' => 'Prodi harus diisi',
-            'nim.required' => 'NIM harus diisi',
-            'nim.min' => 'NIM salah',
             'semester.required' => 'Semester harus diisi'
         ]);
 
         $periode = DB::table('tb_periode')->latest('selesai')->first();
 
         DB::table('tb_alternatif')->insert(
-            array('kode_alternatif' => $request->kode_alternatif, 
-            'periode_id' => $periode->ID,
-            'nama_alternatif' => $request->nama_alternatif,
-            'jenis_kelamin' => $request->jenis_kelamin,
-            'prodi' =>  $request->prodi,
+            array(
             'nim' =>  $request->nim,
+            'user_id' => Auth::user()->id,
+            'periode_id' => $periode->id,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'prodi' =>  $request->prodi,            
             'semester' => $request->semester));
         
         // query("INSERT INTO tb_rel_alternatif (kode_alternatif, kode_kriteria) SELECT ?, kode_kriteria FROM tb_kriteria", [$request->kode_alternatif]);
@@ -85,7 +83,7 @@ class MahasiswaController extends Controller
                                 $filename[$col->kode_kriteria]->move(public_path('document'), $file);            
                                 DB::table('tb_rel_alternatif')->insert(
                                     array( 
-                                    'kode_alternatif' => $request->kode_alternatif,
+                                    'nim' => $request->nim,
                                     'kode_kriteria' => $col->kode_kriteria,
                                     'nilai' => 1,
                                     'file' => $file
@@ -94,7 +92,7 @@ class MahasiswaController extends Controller
                     }else{
                         DB::table('tb_rel_alternatif')->insert(
                             array( 
-                            'kode_alternatif' => $request->kode_alternatif,
+                            'nim' => $request->nim,
                             'kode_kriteria' => $col->kode_kriteria,
                             'nilai' => 1,
                         ));
@@ -109,7 +107,7 @@ class MahasiswaController extends Controller
                             $filename[$col->kode_kriteria]->move(public_path('document'), $file);            
                             DB::table('tb_rel_alternatif')->insert(
                                 array( 
-                                'kode_alternatif' => $request->kode_alternatif,
+                                'nim' => $request->nim,
                                 'kode_kriteria' => $col->kode_kriteria,
                                 'nilai' => 2,
                                 'file' => $file
@@ -118,7 +116,7 @@ class MahasiswaController extends Controller
                     }else{
                         DB::table('tb_rel_alternatif')->insert(
                             array( 
-                            'kode_alternatif' => $request->kode_alternatif,
+                            'nim' => $request->nim,
                             'kode_kriteria' => $col->kode_kriteria,
                             'nilai' => 2,
                         ));
@@ -131,7 +129,7 @@ class MahasiswaController extends Controller
                             $filename[$col->kode_kriteria]->move(public_path('document'), $file);            
                             DB::table('tb_rel_alternatif')->insert(
                                 array( 
-                                'kode_alternatif' => $request->kode_alternatif,
+                                'nim' => $request->nim,
                                 'kode_kriteria' => $col->kode_kriteria,
                                 'nilai' => 3,
                                 'file' => $file
@@ -140,7 +138,7 @@ class MahasiswaController extends Controller
                     }else{
                         DB::table('tb_rel_alternatif')->insert(
                             array( 
-                            'kode_alternatif' => $request->kode_alternatif,
+                            'nim' => $request->nim,
                             'kode_kriteria' => $col->kode_kriteria,
                             'nilai' => 3,
                         ));
@@ -153,7 +151,7 @@ class MahasiswaController extends Controller
                             $filename[$col->kode_kriteria]->move(public_path('document'), $file);            
                             DB::table('tb_rel_alternatif')->insert(
                                 array( 
-                                'kode_alternatif' => $request->kode_alternatif,
+                                'nim' => $request->nim,
                                 'kode_kriteria' => $col->kode_kriteria,
                                 'nilai' => 4,
                                 'file' => $file
@@ -162,7 +160,7 @@ class MahasiswaController extends Controller
                     }else{
                         DB::table('tb_rel_alternatif')->insert(
                             array( 
-                            'kode_alternatif' => $request->kode_alternatif,
+                            'nim' => $request->nim,
                             'kode_kriteria' => $col->kode_kriteria,
                             'nilai' => 4,
                         ));
@@ -175,7 +173,7 @@ class MahasiswaController extends Controller
                             $filename[$col->kode_kriteria]->move(public_path('document'), $file);            
                             DB::table('tb_rel_alternatif')->insert(
                                 array( 
-                                'kode_alternatif' => $request->kode_alternatif,
+                                'nim' => $request->nim,
                                 'kode_kriteria' => $col->kode_kriteria,
                                 'nilai' => 5,
                                 'file' => $file
@@ -184,7 +182,7 @@ class MahasiswaController extends Controller
                     }else{
                         DB::table('tb_rel_alternatif')->insert(
                             array( 
-                            'kode_alternatif' => $request->kode_alternatif,
+                            'nim' => $request->nim,
                             'kode_kriteria' => $col->kode_kriteria,
                             'nilai' => 5,
                         ));
@@ -199,7 +197,7 @@ class MahasiswaController extends Controller
                                 $filename[$col->kode_kriteria]->move(public_path('document'), $file);            
                                 DB::table('tb_rel_alternatif')->insert(
                                     array( 
-                                    'kode_alternatif' => $request->kode_alternatif,
+                                    'nim' => $request->nim,
                                     'kode_kriteria' => $col->kode_kriteria,
                                     'nilai' => 5,
                                     'file' => $file
@@ -209,7 +207,7 @@ class MahasiswaController extends Controller
                     }else{
                         DB::table('tb_rel_alternatif')->insert(
                             array( 
-                            'kode_alternatif' => $request->kode_alternatif,
+                            'nim' => $request->nim,
                             'kode_kriteria' => $col->kode_kriteria,
                             'nilai' => 5,
                         ));
@@ -222,7 +220,7 @@ class MahasiswaController extends Controller
                                 $filename[$col->kode_kriteria]->move(public_path('document'), $file);            
                                 DB::table('tb_rel_alternatif')->insert(
                                     array( 
-                                    'kode_alternatif' => $request->kode_alternatif,
+                                    'nim' => $request->nim,
                                     'kode_kriteria' => $col->kode_kriteria,
                                     'nilai' => 4,
                                     'file' => $file
@@ -232,7 +230,7 @@ class MahasiswaController extends Controller
                     }else{
                         DB::table('tb_rel_alternatif')->insert(
                             array( 
-                            'kode_alternatif' => $request->kode_alternatif,
+                            'nim' => $request->nim,
                             'kode_kriteria' => $col->kode_kriteria,
                             'nilai' => 4,
                         ));
@@ -245,7 +243,7 @@ class MahasiswaController extends Controller
                                 $filename[$col->kode_kriteria]->move(public_path('document'), $file);            
                                 DB::table('tb_rel_alternatif')->insert(
                                     array( 
-                                    'kode_alternatif' => $request->kode_alternatif,
+                                    'nim' => $request->nim,
                                     'kode_kriteria' => $col->kode_kriteria,
                                     'nilai' => 3,
                                     'file' => $file
@@ -255,7 +253,7 @@ class MahasiswaController extends Controller
                     }else{
                         DB::table('tb_rel_alternatif')->insert(
                             array( 
-                            'kode_alternatif' => $request->kode_alternatif,
+                            'nim' => $request->nim,
                             'kode_kriteria' => $col->kode_kriteria,
                             'nilai' => 3,
                         ));
@@ -268,7 +266,7 @@ class MahasiswaController extends Controller
                                 $filename[$col->kode_kriteria]->move(public_path('document'), $file);            
                                 DB::table('tb_rel_alternatif')->insert(
                                     array( 
-                                    'kode_alternatif' => $request->kode_alternatif,
+                                    'nim' => $request->nim,
                                     'kode_kriteria' => $col->kode_kriteria,
                                     'nilai' => 2,
                                     'file' => $file
@@ -278,7 +276,7 @@ class MahasiswaController extends Controller
                     }else{
                         DB::table('tb_rel_alternatif')->insert(
                             array( 
-                            'kode_alternatif' => $request->kode_alternatif,
+                            'nim' => $request->nim,
                             'kode_kriteria' => $col->kode_kriteria,
                             'nilai' => 2,
                         ));
@@ -291,7 +289,7 @@ class MahasiswaController extends Controller
                                 $filename[$col->kode_kriteria]->move(public_path('document'), $file);            
                                 DB::table('tb_rel_alternatif')->insert(
                                     array( 
-                                    'kode_alternatif' => $request->kode_alternatif,
+                                    'nim' => $request->nim,
                                     'kode_kriteria' => $col->kode_kriteria,
                                     'nilai' => 1,
                                     'file' => $file
@@ -301,7 +299,7 @@ class MahasiswaController extends Controller
                     }else{
                         DB::table('tb_rel_alternatif')->insert(
                             array( 
-                            'kode_alternatif' => $request->kode_alternatif,
+                            'nim' => $request->nim,
                             'kode_kriteria' => $col->kode_kriteria,
                             'nilai' => 1,
                         ));
@@ -314,14 +312,14 @@ class MahasiswaController extends Controller
 
             //     DB::table('tb_nilai')->insert(
             //         array('kode_kriteria' => $col->kode_kriteria, 
-            //         'kode_alternatif' => $request->kode_alternatif,
+            //         'nim' => $request->nim,,
             //         'nilai' => $request->nilai[$col->kode_kriteria],
             //         'file' => $namaFile
             //     ));
             // }else{
             //     DB::table('tb_nilai')->insert(
             //         array('kode_kriteria' => $col->kode_kriteria, 
-            //         'kode_alternatif' => $request->kode_alternatif,
+            //         'nim' => $request->nim,,
             //         'nilai' => $request->nilai[$col->kode_kriteria]
             //     ));
             // }

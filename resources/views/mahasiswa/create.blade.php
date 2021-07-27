@@ -21,7 +21,7 @@
 			<?php
 				$date_now = date("Y-m-d"); 
 
-				if ($periode->status == 0 || $date_now > $periode->selesai || $date_now < $periode->mulai) {
+				if ($date_now > $periode->selesai || $date_now < $periode->mulai) {
 					echo "
 					<div class='col-md-4 right'>
 						<button type='button' class='btn btn-primary'  data-toggle='modal' data-target='#modal-add' disabled>
@@ -61,13 +61,16 @@
 					<div class="col-md-5">
 						{{ show_error($errors) }}
 						{{ csrf_field() }}
-						<div class="form-group" hidden>
-							<label>Kode <span class="text-danger">*</span></label>
-							<input class="form-control" type="text" name="kode_alternatif" value="{{ old('kode_alternatif', kode_oto('kode_alternatif', 'tb_alternatif', 'A', 2)) }}" />
+						<div class="form-group">
+							<label>NIM <span class="text-danger">*</span></label>
+							<input class="form-control" autocomplete="off" type="text" name="nim" value="{{ old('nim') }}" required />	
+							@error('nim')
+								<div class="invalid-feedback">{{ $message }}</div>
+							@enderror						
 						</div>
 						<div class="form-group">
 							<label>Nama Lengkap<span class="text-danger">*</span></label>
-							<input class="form-control" autocomplete="off" type="text" name="nama_alternatif" value="{{ old('nama_alternatif') }}" required />
+							<input class="form-control" autocomplete="off" type="text" name="nama_alternatif" value="{{ $user->nama_user }}" readonly />
 						</div>
 						<div class="form-group">
 							<label>Jenis Kelamin<span class="text-danger">*</span></label>
@@ -97,13 +100,6 @@
 							@error('prodi')
 								<div class="invalid-feedback">{{ $message }}</div>
 							@enderror
-						</div>
-						<div class="form-group">
-							<label>NIM <span class="text-danger">*</span></label>
-							<input class="form-control" autocomplete="off" type="text" name="nim" value="{{ old('nim') }}" required />	
-							@error('nim')
-								<div class="invalid-feedback">{{ $message }}</div>
-							@enderror						
 						</div>
 						<div class="form-group">
 							<label>Semester <span class="text-danger">*</span></label>

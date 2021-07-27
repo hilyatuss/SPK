@@ -20,7 +20,7 @@
 		<table class="table table-bordered table-hover">
 			<thead>
 			<th width = "3px">No</th>
-				<th width = "7px">Kode</th>
+				<th width = "7px">NIM</th>
 				<th>Nama alternatif</th>
 				@foreach($kriterias as $kriteria)
 				<th width = "100px"><center>{{ $kriteria->nama_kriteria }}</center></th>
@@ -31,8 +31,8 @@
 			@foreach($rows as $key => $row)
 			<tr>
 				<td>{{ ($rows->currentPage() - 1) * $limit + $key + 1}}</td>
-				<td>{{ $row->kode_alternatif }}</td>
-				<td>{{ $row->nama_alternatif }}</td>
+				<td>{{ $row->nim }}</td>
+				<td>{{ $row->nama_user }}</td>
 				@foreach($row->nilais as $nilai)
 				<td>
 					<center>

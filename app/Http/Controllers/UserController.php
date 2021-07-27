@@ -26,7 +26,7 @@ class UserController extends Controller
             'username.required' => 'Username harus diisi',
         ]);
         $user = current_user();
-        if (get_row("SELECT * FROM tb_user WHERE username='{$request->username}' AND id_user<>'$user->id_user'"))
+        if (get_row("SELECT * FROM tb_user WHERE username='{$request->username}' AND id<>'$user->id'"))
             return back()->withErrors([
                 'username' => 'Username sudah terdaftar!',
             ]);
@@ -81,7 +81,8 @@ class UserController extends Controller
     {
         if (Auth::attempt(['username' => $request->username, 'password' => $request->password, 'status_user' => 1])) {
             $request->session()->regenerate();
-            return redirect()->intended('home');
+            // return redirect()->intended('home');
+            return redirect('/');
         }
 
         return back()->withErrors([
@@ -99,7 +100,7 @@ class UserController extends Controller
         $data['title'] = 'Data User';
         $data['limit'] = 10;
         $data['rows'] = User::where('nama_user', 'like', '%' . $data['q'] . '%')
-            ->orderBy('id_user')
+            ->orderBy('id')
             ->paginate($data['limit'])->withQueryString();
         return view('user.index', $data);
     }
@@ -186,7 +187,7 @@ class UserController extends Controller
             'status_user.required' => 'Status harus diisi',
         ]);
 
-        if (get_row("SELECT * FROM tb_user WHERE username='{$request->username}' AND id_user<>'$user->id_user'"))
+        if (get_row("SELECT * FROM tb_user WHERE username='{$request->username}' AND id<>'$user->id'"))
             return back()->withErrors([
                 'username' => 'Username sudah terdaftar!',
             ]);

@@ -12,7 +12,7 @@ class AlternatifController extends Controller
     public function cetak()
     {
         $data['title'] = 'Laporan Data Alternatif';
-        $data['rows'] = Alternatif::orderBy('kode_alternatif')->get();
+        $data['rows'] = Alternatif::orderBy('nim')->get();
         $data['tgl'] = Carbon::now()->locale('id')->isoFormat('LL');
         return view('alternatif.cetak', $data);
     }
@@ -27,9 +27,12 @@ class AlternatifController extends Controller
         $data['q'] = $request->input('q');
         $data['title'] = 'Data Alternatif';
         $data['limit'] = 10;
-        $data['rows'] = Alternatif::where('nama_alternatif', 'like', '%' . $data['q'] . '%')
-            ->orderBy('kode_alternatif')
+        $data['rows'] = Alternatif::join('tb_user', 'tb_alternatif.user_id', '=', 'tb_user.id')
+            ->where('nama_user', 'like', '%' . $data['q'] . '%')
+            ->orderBy('nim')
             ->paginate($data['limit'])->withQueryString();
+
+        // echo json_encode($data['rows']);
         return view('alternatif.index', $data);
     }
 
@@ -53,23 +56,23 @@ class AlternatifController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kode_alternatif' => 'required|unique:tb_alternatif',
+            'nim' => 'required|unique:tb_alternatif',
             'nama_alternatif' => 'required',
-            'jenis_kelamin' => 'required',
             'prodi' => 'required',
             // 'semester' => 'required',
         ], [
-            'kode_alternatif.required' => 'Kode alternatif harus diisi',
-            'kode_alternatif.unique' => 'Kode alternatif harus unik',
-            'nama_alternatif.required' => 'Nama alternatif harus diisi',
+            'nim.required' => 'NIM harus diisi',
+            'nim.unique' => 'NIM harus unik',
             'jenis_kelamin.required' => 'Jenis Kelamin harus diisi',
             'prodi' => 'Program Studi harus diisi',
             // 'semester' => 'Program Studi harus diisi',
         ]);
-        $alternatif = new Alternatif($request->all());
-        $alternatif->save();
+        // $alternatif = new Alternatif($request->all());
+        // $alternatif->save();
 
-        query("INSERT INTO tb_rel_alternatif (kode_alternatif, kode_kriteria) SELECT ?, kode_kriteria FROM tb_kriteria", [$alternatif->kode_alternatif]);
+        $alternatif = Alternatif::insert(['nim' => $request->nim, 'jenis_kelamin' => $request->jenis_kelamin, 'prodi' => $request->prodi]);
+
+        query("INSERT INTO tb_rel_alternatif (nim, kode_kriteria) SELECT ?, nim FROM tb_kriteria", [$alternatif->nim]);
 
         return redirect('alternatif')->with('message', 'Data berhasil ditambah!');
     }
@@ -108,22 +111,21 @@ class AlternatifController extends Controller
     public function update(Request $request, Alternatif $alternatif)
     {
         $request->validate([
+            'nim' => 'required',
             'nama_alternatif' => 'required',
             'jenis_kelamin' => 'required',
             'prodi' => 'required',
-            'nim' => 'required',
             'semester' => 'required',
         ], [
+            'nim.required' => 'NIM harus diisi',
             'nama_alternatif.required' => 'Nama alternatif harus diisi',
             'jenis_kelamin.required' => 'Jenis Kelamin harus diisi',
             'prodi.required' => 'Program Studi harus diisi',
-            'nim.required' => 'NIM harus diisi',
             'semester.required' => 'Semester harus diisi',
         ]);
-        $alternatif->nama_alternatif = $request->nama_alternatif;
+        $alternatif->nim = $request->nim;
         $alternatif->jenis_kelamin = $request->jenis_kelamin;
         $alternatif->prodi = $request->prodi;
-        $alternatif->nim = $request->nim;
         $alternatif->semester = $request->semester;
         $alternatif->save();
         return redirect('alternatif')->with('message', 'Data berhasil diubah!');
@@ -137,12 +139,8 @@ class AlternatifController extends Controller
      */
     public function destroy(Alternatif $alternatif)
     {
-        // query("DELETE FROM tb_rel_alternatif WHERE kode_alternatif=?", [$alternatif]);
-        // $alternatif->delete();
-
-        DB::table('tb_rel_alternatif')->where('kode_alternatif', $alternatif->kode_alternatif)->delete();
-        // DB::table('tb_nilai')->where('kode_alternatif', $alternatif->kode_alternatif)->delete();
-        Alternatif::where('kode_alternatif', $alternatif->kode_alternatif)->delete();
+        DB::table('tb_rel_alternatif')->where('nim', $alternatif->nim)->delete();
+        Alternatif::where('nim', $alternatif->nim)->delete();
 
         return redirect('alternatif')->with('message', 'Data berhasil dihapus!');
     }

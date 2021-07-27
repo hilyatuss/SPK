@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Rel_Alternatif extends Model
 {
     protected $table = 'tb_rel_alternatif';
-    protected $primaryKey = 'ID';
+    protected $primaryKey = 'id';
 
-    protected $fillable = ['kode_alternatif', 'kode_kriteria', 'nilai', 'file'];
+    protected $fillable = ['nim', 'kode_kriteria', 'nilai', 'file'];
 }

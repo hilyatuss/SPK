@@ -23,27 +23,25 @@
 		<table class="table table-bordered table-hover">
 			<thead>
 			<th width = "3px">No</th>
-				<th width = "7px">Kode</th>
+				<th width = "7px">NIM</th>
 				<th>Nama alternatif</th>
 				<th><center>Jenis Kelamin</center></th>
 				<th><center>Program Studi</center></th>
-				<th><center>NIM</center></th>
 				<th><center>Semester</center></th>
 				<th><center>Aksi</center></th>
 			</thead>
 			@foreach($rows as $key => $row)
 			<tr>
 				<td>{{ ($rows->currentPage() - 1) * $limit + $key + 1}}</td>
-				<td>{{ $row->kode_alternatif }}</td>
-				<td>{{ $row->nama_alternatif }}</td>
+				<td><center>{{ $row->nim }}</center></td>
+				<td>{{ $row->nama_user }}</td>
 				<td><center>{{ $row->jenis_kelamin }}</center></td>
 				<td><center>{{ $row->prodi }}</center></td>
-				<td><center>{{ $row->nim }}</center></td>
 				<td><center>{{ $row->semester }}</center></td>
 				<td><center>
-					<!-- <a class="btn btn-xs btn-info" href="{{ route('alternatif.edit', $row) }}" {{ is_hidden('alternatif.edit') }}><i class="fa fa-edit"></i> Ubah</a> -->
-					<a class="btn btn-xs btn-info" href="{{ route('alternatif.edit', $row->kode_alternatif) }}" data-toggle="modal" data-target="#modal-edit-{{ $row->kode_alternatif }}" {{ is_hidden('alternatif.edit') }}><i class="fa fa-edit"></i> Ubah</a>
-					<form action="{{ route('alternatif.destroy', $row) }}" method="POST" style="display: inline-block;" onsubmit="return confirm('Hapus Data?')" {{ is_hidden('alternatif.destroy') }}>
+
+					<a class="btn btn-xs btn-info" href="{{ route('alternatif.edit', $row->nim) }}" data-toggle="modal" data-target="#modal-edit-{{ $row->nim }}" {{ is_hidden('alternatif.edit') }}><i class="fa fa-edit"></i> Ubah</a>
+					<form action="{{ route('alternatif.destroy', $row->nim) }}" method="POST" style="display: inline-block;" onsubmit="return confirm('Hapus Data?')" {{ is_hidden('alternatif.destroy') }}>
 						{{ csrf_field() }}
 						{{ method_field('DELETE') }}
 						<button type="submit" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i> Hapus</button>
@@ -53,7 +51,7 @@
 			@endforeach
 			
 			@foreach ($rows as $row)
-				<div class="modal fade" id="modal-edit-{{ $row->kode_alternatif }}"  tabindex="-1">
+				<div class="modal fade" id="modal-edit-{{ $row->nim }}"  tabindex="-1">
 					<div class="modal-dialog modal-l" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
@@ -63,7 +61,7 @@
 							</div>
 							<div class="modal-body">
 								<!-- form start -->
-								<form action="{{ route('alternatif.update', $row->kode_alternatif) }}" method="post">
+								<form action="{{ route('alternatif.update', $row->nim) }}" method="post">
 									<div class="card">
 										<div class="card-body">
 											<div class="row">
@@ -72,12 +70,12 @@
 													{{ csrf_field() }}
 													{{ method_field('PUT') }}
 													<div class="form-group">
-														<label>Kode alternatif <span class="text-danger">*</span></label>
-														<input class="form-control" type="text" name="kode_alternatif" value="{{ old('kode_alternatif', $row->kode_alternatif) }}" readonly>
+														<label>NIM <span class="text-danger">*</span></label>
+														<input autocomplete="off" class="form-control" type="text" name="nim" value="{{ old('nim', $row->nim) }}">
 													</div>
 													<div class="form-group">
 														<label>Nama alternatif <span class="text-danger">*</span></label>
-														<input autocomplete="off" class="form-control" type="text" name="nama_alternatif" value="{{ old('nama_alternatif', $row->nama_alternatif) }}">
+														<input autocomplete="off" class="form-control" type="text" name="nama_alternatif" value="{{ old('nama_alternatif', $row->nama_user) }}" readonly>
 													</div>
 													<div class="form-group">
 														<label>Jenis Kelamin<span class="text-danger">*</span></label>
@@ -107,10 +105,6 @@
 														@error('prodi')
 															<div class="invalid-feedback">{{ $message }}</div>
 														@enderror
-													</div>
-													<div class="form-group">
-														<label>NIM <span class="text-danger">*</span></label>
-														<input autocomplete="off" class="form-control" type="text" name="nim" value="{{ old('nim', $row->nim) }}">
 													</div>
 													<div class="form-group">
 														<label>Semester <span class="text-danger">*</span></label>

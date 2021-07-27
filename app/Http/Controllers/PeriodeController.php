@@ -44,15 +44,17 @@ class PeriodeController extends Controller
     {
         $request->validate([
             'mulai' => 'required',
-            'selesai' => 'required',
-            'status' => 'required',
+            'selesai' => 'required'
         ], [
             'mulai.required' => 'Tanggal Mulai harus diisi',
-            'selesai.required' => 'Tanggal Selesai harus diisi',
-            'status.required' => 'Status harus diisi'
+            'selesai.required' => 'Tanggal Selesai harus diisi'
         ]);
-        $periode = new Periode($request->all());
-        $periode->save();
+
+        // $periode = new Periode($request->all());
+        // $periode->save();
+        $tahun = explode("-", $request->selesai);
+        Periode::insert(array('nama_periode' => 'Periode tahun '.$tahun[0],'mulai' => $request->mulai, 'selesai' => $request->selesai));
+
         return redirect('periode')->with('message', 'Data berhasil ditambah!');
     }
 
